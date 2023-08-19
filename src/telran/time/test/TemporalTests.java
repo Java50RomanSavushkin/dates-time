@@ -19,6 +19,7 @@ import telran.time.BarMizvaAdjuster;
 import telran.time.NextFriday13;
 
 class TemporalTests {
+
 	@BeforeEach
 	void setUp() throws Exception {
 	}
@@ -28,21 +29,22 @@ class TemporalTests {
 	void test() {
 		LocalDate birthDateAS = /* LocalDate.of(1799, 6, 6); */ LocalDate.parse("1799-06-06");
 		LocalDate barMizvaAS = birthDateAS.plusYears(13);
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM, YYYY /d EEEE");
-		System.out.printf("BirthDate of AS is %s; Bar Mizva of AS %s\n", birthDateAS.format(dtf),
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM, YYYY/d EEEE");
+		System.out.printf("Birthdate of AS is %s; Bar Mizva of AS %s\n", birthDateAS.format(dtf),
 				barMizvaAS.format(dtf));
 		ChronoUnit unit = ChronoUnit.DAYS;
 		System.out.printf("Number of %s between %s and %s is %d\n", unit, birthDateAS, barMizvaAS,
 				unit.between(birthDateAS, barMizvaAS));
+
 	}
 
 	@Test
 	void barMizvaAdjusterTest() {
 		TemporalAdjuster adjuster = new BarMizvaAdjuster();
-		LocalDateTime ltd = LocalDateTime.of(2000, 1, 1, 0, 0);
+		LocalDateTime ldt = LocalDateTime.of(2000, 1, 1, 0, 0);
 		LocalDateTime expected = LocalDateTime.of(2013, 1, 1, 0, 0);
-		assertEquals(expected, ltd.with(new BarMizvaAdjuster()));
-		assertThrowsExactly(UnsupportedTemporalTypeException.class, () -> LocalTime.now().with(expected));
+		assertEquals(expected, ldt.with(new BarMizvaAdjuster()));
+		assertThrowsExactly(UnsupportedTemporalTypeException.class, () -> LocalTime.now().with(adjuster));
 	}
 
 	@Test
@@ -53,7 +55,6 @@ class TemporalTests {
 		LocalDate expected2 = LocalDate.of(2024, 9, 13);
 		assertEquals(expected1, ld.with(adjuster));
 		assertEquals(expected2, expected1.with(adjuster));
- 
 	}
-
+ 
 }
