@@ -11,22 +11,22 @@ public class NextFriday13 implements TemporalAdjuster {
 
 	@Override
 	public Temporal adjustInto(Temporal temporal) {
-		if (!temporal.isSupported(ChronoField.DAY_OF_WEEK) || !temporal.isSupported(ChronoField.DAY_OF_MONTH)) {
+		if(!temporal.isSupported(ChronoField.DAY_OF_WEEK) || !temporal.isSupported(ChronoField.DAY_OF_MONTH)) {
 			throw new UnsupportedTemporalTypeException("must support DAY_OF_WEEK and DAY_OF_MONTH");
 		}
-		if (!temporal.isSupported(ChronoUnit.MONTHS)) {
+		if(!temporal.isSupported(ChronoUnit.MONTHS)) {
 			throw new UnsupportedTemporalTypeException("must support ChronoUnit.MONTHS");
 		}
 		temporal = adjustTemporal(temporal);
-
-		while (temporal.get(ChronoField.DAY_OF_WEEK) != DayOfWeek.FRIDAY.getValue()) {
+		
+		while(temporal.get(ChronoField.DAY_OF_WEEK) != DayOfWeek.FRIDAY.getValue()) {
 			temporal = temporal.plus(1, ChronoUnit.MONTHS);
 		}
 		return temporal;
 	}
 
 	private Temporal adjustTemporal(Temporal temporal) {
-
+		
 		if (temporal.get(ChronoField.DAY_OF_MONTH) >= 13) {
 			temporal = temporal.plus(1, ChronoUnit.MONTHS);
 		}
